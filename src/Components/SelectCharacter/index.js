@@ -20,12 +20,11 @@ const SelectCharacter = ({ setCharacterNFT }) => {
         console.log("Minting character in progress...");
         const mintTx = gameContract.mintCharacterNFT(characterId);
         await mintTx.wait();
-        console.log("mint tx:", mintTx);
+        console.log(mintTx);
         setMintingCharacter(false);
       }
     } catch (error) {
       console.warn("MintCharacterAction Error:", error);
-      setMintingCharacter(false);
     }
   };
 
@@ -122,7 +121,6 @@ const SelectCharacter = ({ setCharacterNFT }) => {
       {characters.length > 0 && (
         <div className="character-grid">{renderCharacters()}</div>
       )}
-      {/* Only show our loading state if mintingCharacter is true */}
       {mintingCharacter && (
         <div className="loading">
           <div className="indicator">
@@ -130,7 +128,7 @@ const SelectCharacter = ({ setCharacterNFT }) => {
             <p>Minting In Progress...</p>
           </div>
           <img
-            src="https://media2.giphy.com/media/61tYloUgq1eOk/giphy.gif?cid=ecf05e47dg95zbpabxhmhaksvoy8h526f96k4em0ndvx078s&rid=giphy.gif&ct=g"
+            src="https://media.giphy.com/media/3aGZA6WLI9Jde/giphy.gif"
             alt="Minting loading indicator"
           />
         </div>
