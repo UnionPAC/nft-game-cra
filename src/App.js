@@ -91,8 +91,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    checkIfWalletIsConnected();
     checkNetwork();
+    checkIfWalletIsConnected();
   }, []);
 
   useEffect(() => {
@@ -129,7 +129,7 @@ const App = () => {
         <div className="header-container">
           <p className="header gradient-text">💮 Inuyasha World Slayer 💮</p>
           <p className="sub-text">
-            Sesshōmaru is after the Tessaiga 🗡 &nbsp;again ... team up to take
+            Sesshōmaru is after the Tessaiga 🗡 &nbsp;again <br /> ... team up to take
             him down!
           </p>
           {renderContent()}

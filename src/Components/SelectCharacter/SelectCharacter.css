@@ -5,15 +5,14 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  margin-top: 20px;
 }
 
 .select-character-container .character-grid {
-  width: 100%;
+  width: 70%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
-  grid-row-gap: 15px;
+  grid-row-gap: 5px;
 }
 
 .character-grid .character-item {
