@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import twitterLogo from "./assets/twitter-logo.svg";
 import "./App.css";
 import SelectCharacter from "./Components/SelectCharacter";
+import Arena from "./Components/Arena";
+import LoadingIndicator from "./Components/LoadingIndicator";
 import { CONTRACT_ADDRESS, transformCharacterData } from "./constants";
 import myEpicGame from "./utils/MyEpicGame.json";
 import { ethers } from "ethers";
@@ -13,8 +15,9 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [characterNFT, setCharacterNFT] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const checkNetwork = async () => {
+  /* const checkNetwork = async () => {
     try {
       if (window.ethereum.networkVersion !== "4") {
         alert("Please connect to the Rinkeby Network 🙂");
@@ -22,13 +25,14 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }; */
 
   const checkIfWalletIsConnected = async () => {
     try {
       const { ethereum } = window;
       if (!ethereum) {
         console.log("Please install MetaMask! 🦊");
+        setIsLoading(false);
         return;
       } else {
         console.log("Got the Ethereum object", ethereum);
@@ -45,9 +49,16 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const renderContent = () => {
+
+    // if loading
+    if (isLoading) {
+      return <LoadingIndicator />
+    }
+
     // Scenario 1: User has not connected to app - Show Connect To Wallet Button
     if (!currentAccount) {
       return (
@@ -65,10 +76,13 @@ const App = () => {
           </button>
         </div>
       );
-    }
-    // Scenario 2: User has connected to app and does NOT have a character NFT - Show SelectCharacter component
-    if (currentAccount && !characterNFT) {
+      // Scenario 2: User has connected to app and does NOT have a character NFT - Show SelectCharacter component
+    } else if (currentAccount && !characterNFT) {
       return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+    } else if (currentAccount && characterNFT) {
+      return (
+        <Arena characterNFT={characterNFT} setCharacterNFT={setCharacterNFT} />
+      );
     }
   };
 
@@ -91,7 +105,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    checkNetwork();
+    setIsLoading(true);
     checkIfWalletIsConnected();
   }, []);
 
@@ -115,6 +129,8 @@ const App = () => {
       } else {
         console.log("User does not have a character NFT yet!");
       }
+
+      setIsLoading(false);
     };
 
     if (currentAccount) {
@@ -129,8 +145,8 @@ const App = () => {
         <div className="header-container">
           <p className="header gradient-text">💮 Inuyasha World Slayer 💮</p>
           <p className="sub-text">
-            Sesshōmaru is after the Tessaiga 🗡 &nbsp;again <br /> ... team up to take
-            him down!
+            Sesshōmaru is after the Tessaiga 🗡 &nbsp;again <br /> ... team up to
+            take him down!
           </p>
           {renderContent()}
         </div>

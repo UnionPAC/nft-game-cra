@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SelectCharacter.css";
+import LoadingIndicator from "../LoadingIndicator";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import myEpicGame from "../../utils/MyEpicGame.json";
@@ -10,17 +11,21 @@ const SelectCharacter = ({ setCharacterNFT }) => {
 
   // initialze our actual game contract and store in state (to be used multiple times)
   const [gameContract, setGameContract] = useState(null);
+  const [mintingCharacter, setMintingCharacter] = useState(false);
 
   const mintCharacterNFTAction = async (characterId) => {
     try {
       if (gameContract) {
+        setMintingCharacter(true);
         console.log("Minting character in progress...");
         const mintTx = gameContract.mintCharacterNFT(characterId);
         await mintTx.wait();
         console.log("mint tx:", mintTx);
+        setMintingCharacter(false);
       }
     } catch (error) {
       console.warn("MintCharacterAction Error:", error);
+      setMintingCharacter(false);
     }
   };
 
@@ -108,6 +113,7 @@ const SelectCharacter = ({ setCharacterNFT }) => {
         gameContract.off("CharcterNFTMinted", onCharacterMint);
       }
     };
+    //eslint-disable-next-line
   }, [gameContract]);
 
   return (
@@ -115,6 +121,19 @@ const SelectCharacter = ({ setCharacterNFT }) => {
       <h2 style={{ padding: "30px 0" }}>Mint Your Hero .... Choose Wisely!</h2>
       {characters.length > 0 && (
         <div className="character-grid">{renderCharacters()}</div>
+      )}
+      {/* Only show our loading state if mintingCharacter is true */}
+      {mintingCharacter && (
+        <div className="loading">
+          <div className="indicator">
+            <LoadingIndicator />
+            <p>Minting In Progress...</p>
+          </div>
+          <img
+            src="https://media2.giphy.com/media/61tYloUgq1eOk/giphy.gif?cid=ecf05e47dg95zbpabxhmhaksvoy8h526f96k4em0ndvx078s&rid=giphy.gif&ct=g"
+            alt="Minting loading indicator"
+          />
+        </div>
       )}
     </div>
   );
