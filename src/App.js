@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import twitterLogo from "./assets/twitter-logo.svg";
 import "./App.css";
+import SelectCharacter from "./Components/SelectCharacter";
+import { CONTRACT_ADDRESS, transformCharacterData } from "./constants";
+import myEpicGame from "./utils/MyEpicGame.json";
+import { ethers } from "ethers";
 
 // Constants
 const TWITTER_HANDLE = "unionpac_";
@@ -8,6 +12,17 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
+  const [characterNFT, setCharacterNFT] = useState(null);
+
+  const checkNetwork = async () => {
+    try {
+      if (window.ethereum.networkVersion !== "4") {
+        alert("Please connect to the Rinkeby Network 🙂");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -32,6 +47,31 @@ const App = () => {
     }
   };
 
+  const renderContent = () => {
+    // Scenario 1: User has not connected to app - Show Connect To Wallet Button
+    if (!currentAccount) {
+      return (
+        <div className="connect-wallet-container">
+          <img
+            src="https://media.giphy.com/media/Fbgsz50fzMGVW/giphy.gif"
+            alt="Inuyasha attacking GIF"
+            className="gif"
+          />
+          <button
+            onClick={connectWallet}
+            className="cta-button connect-wallet-button"
+          >
+            Connect Wallet To Begin
+          </button>
+        </div>
+      );
+    }
+    // Scenario 2: User has connected to app and does NOT have a character NFT - Show SelectCharacter component
+    if (currentAccount && !characterNFT) {
+      return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+    }
+  };
+
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
@@ -52,33 +92,49 @@ const App = () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+    checkNetwork();
   }, []);
+
+  useEffect(() => {
+    const fetchNFTMetadata = async () => {
+      console.log("Checking for Character NFT on address:", currentAccount);
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const gameContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        myEpicGame.abi,
+        signer
+      );
+
+      const tx = await gameContract.checkIfUserHasNFT();
+      console.log(tx);
+      if (tx.name) {
+        console.log("User has a character NFT!");
+        setCharacterNFT(transformCharacterData(tx));
+      } else {
+        console.log("User does not have a character NFT yet!");
+      }
+    };
+
+    if (currentAccount) {
+      console.log("Current Account:", currentAccount);
+      fetchNFTMetadata();
+    }
+  }, [currentAccount]);
 
   return (
     <div className="App">
       <div className="container">
         <div className="header-container">
-          <p className="header gradient-text">⚔️ Inuyasha World Slayer ⚔️</p>
-          <div className="sub-text">
-            <p>
-              Sesshōmaru is after the Sacred Jewel 🔮&nbsp; and the Tessaiga 🗡
-              &nbsp; again ...{" "}
-            </p>
-            <p>team up to take him down!</p>
-          </div>
-          <div className="connect-wallet-container">
-            <img
-              src="https://media.giphy.com/media/Fbgsz50fzMGVW/giphy.gif"
-              alt="Inuyasha attacking GIF"
-              className="gif"
-            />
-            {!currentAccount && (
-              <button onClick={connectWallet} className="cta-button connect-wallet-button">
-                Connect Wallet To Begin
-              </button>
-            )}
-          </div>
+          <p className="header gradient-text">💮 Inuyasha World Slayer 💮</p>
+          <p className="sub-text">
+            Sesshōmaru is after the Tessaiga 🗡 &nbsp;again ... team up to take
+            him down!
+          </p>
+          {renderContent()}
         </div>
+
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
