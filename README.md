@@ -1,6 +1,6 @@
 # NFT Game Project - Inuyasha World Slayer ⚔️
 
-### _This project is on the Rinkeby tesnet !!Make sure that is the network you are connected to!!
+### 🚨 _This project is on the Rinkeby tesnet !!Make sure that is the network you are connected to!!_
 
 ### Welcome 👋
 As a part of my web3 developer adventures I wanted to expand my knowledge of NFT's so I decided to build an game 
