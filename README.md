@@ -13,7 +13,7 @@ This project has been built using:
 - hardhat & ethers.js
 - React (create-react-app)
 
-_Note: I have another repo called 'nft-game-contract' which is the smart contract this project is using... check it out [here](https://github.com/UnionPAC/nft-game-contract)
+_Note: I have another repo called 'nft-game-contract' which is the smart contract this project is using... check it out [here](https://github.com/UnionPAC/nft-game-contract)_
 
 
 ### How it works 💮
