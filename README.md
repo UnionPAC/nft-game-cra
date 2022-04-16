@@ -1,15 +1,22 @@
-# buildspace NFT Game Project
+# NFT Game Project - Inuyasha World Slayer ⚔️
 
 ### **Welcome 👋**
-To get started with this course, clone this repo and follow these commands:
+As a part of my web3 developer adventures I wanted to expand my knowledge of NFT's so I decided to build an game 
+using NFT's! 
 
-1. Run `npm install` at the root of your directory
-2. Run `npm run start` to start the project
-3. Start coding!
+This project outline has been put together by [buildspace](https://buildspace.so/) a great place for developers to learn more
+about web3 🌈 🛠
 
-### What is the `.vscode` Folder?
-If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
+### **Project Details ⚡️**
+This project has been built using:
+
+- hardhat & ethers.js
+- React (create-react-app)
+
+_Note: I have another repo called 'nft-game-contract' which is the smart contract this project is using... check it out [here](https://github.com/UnionPAC/nft-game-contract)
 
 
-### **Questions?**
-Have some questions make sure you head over to your [buildspace Dashboard](https://app.buildspace.so/courses/CO5cc2751b-e878-41c4-99fa-a614dc910ee9) and link your Discord account so you can get access to helpful channels teaching assistants, and your instructor!
+### **How it works 💮 **
+1. Connect using your MetaMask wallet
+2. Select a character to play as - this character you select is actually an NFT which will be minted and given to you!
+3. Use your new NFT character to help bring the Boss down to 0 Health Points
